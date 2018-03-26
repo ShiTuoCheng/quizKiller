@@ -6,3 +6,5 @@
 ##### 3.[将数组中按照数字重复出现的次数进行排序](https://github.com/ShiTuoCheng/quizKiller/blob/master/sortRepeat.js)
 ##### 4.[根据关键词找出 所在对象id](https://github.com/ShiTuoCheng/quizKiller/blob/master/findDocList.js)
 ##### 5.[洗牌算法，真正打乱数组排序](https://github.com/ShiTuoCheng/quizKiller/blob/master/Fisher_Yates_shuffle.js)
+##### 6.[原题目点我](https://user-gold-cdn.xitu.io/2018/3/21/162468732563a3da?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+##### [解法点我](https://github.com/ShiTuoCheng/quizKiller/blob/master/CodingMan.js)

@@ -37,4 +37,8 @@ const CodingMan = (name) => {
   return new man(name);
 };
 
+<<<<<<< HEAD
 CodingMan('Peter').sleepFirst(5).eat('supper');
+=======
+CodingMan('Peter').sleepFirst(5).eat('supper');
+>>>>>>> e87eb4fd0a388678ef146d3ad7679e4d2ac05deb

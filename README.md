@@ -14,4 +14,4 @@
 
 ### 6.[模拟Object.create()](https://github.com/ShiTuoCheng/quizKiller/blob/master/ObjectCreat.js)
 
-### .[模拟new()](https://github.com/ShiTuoCheng/quizKiller/blob/master/ObjectCreat.js)
+### 7.[模拟new()](https://github.com/ShiTuoCheng/quizKiller/blob/master/ObjectCreat.js)

@@ -37,4 +37,41 @@ const CodingMan = (name) => {
   return new man(name);
 };
 
+class CodingMan2 {
+
+  constructor(name){
+    this.name = name;
+    this.sayName();
+    this.queue = Promise.resolve();
+  }
+
+  sayName(){
+    console.log(`Hi! This is ${this.name}`);
+  }
+
+  sleep(time){
+
+    this.queue = this.queue.then(() => {
+      return new Promise(res => {
+
+        // microtask 执行res
+        setTimeout(() => {
+
+          res();
+        }, 1000 * time);
+      });
+    });
+
+    return this;
+  }
+
+  eat(food){
+
+    this.queue.then(() => {
+      console.log(`${this.name} eat ${food}`);
+    })
+  }
+
+}
+
 CodingMan('Peter').sleepFirst(5).eat('supper');

@@ -47,3 +47,9 @@ const unique3 = (arr) => {
 
   return result;
 };
+
+const unique3_1 = arr => {
+
+  const res = arr.filter( (v, i, self) => self.indexOf(v) === self.lastIndexOf(v));
+  return res;
+};

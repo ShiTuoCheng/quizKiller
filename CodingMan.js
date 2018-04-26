@@ -69,7 +69,7 @@ class CodingMan2 {
 
     this.queue.then(() => {
       console.log(`${this.name} eat ${food}`);
-    })
+    });
   }
 
 }

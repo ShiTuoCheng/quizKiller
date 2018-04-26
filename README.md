@@ -21,3 +21,5 @@
 ### 9.[截流函数](https://github.com/ShiTuoCheng/quizKiller/blob/master/throttle.js)
 
 ### 10.[防抖函数](https://github.com/ShiTuoCheng/quizKiller/blob/master/debounce.js)
+
+### 10.[柯里化](https://github.com/ShiTuoCheng/quizKiller/blob/master/curry.js)

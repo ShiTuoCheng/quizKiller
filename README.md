@@ -23,3 +23,5 @@
 ### 10.[防抖函数](https://github.com/ShiTuoCheng/quizKiller/blob/master/debounce.js)
 
 ### 10.[柯里化](https://github.com/ShiTuoCheng/quizKiller/blob/master/curry.js)
+
+### 10.[自己实现一个promise](https://github.com/ShiTuoCheng/quizKiller/blob/master/promise.js)

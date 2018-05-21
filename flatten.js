@@ -14,3 +14,18 @@ function flatten (arr) {
 }
 
 flatten(arr);
+
+
+function flatten2(arr){
+  
+  return arr.reduce((a, c, i) => {
+
+      if(Array.isArray(c)){
+        return [...a, ...flatten2(c)];
+      }else{
+        return [...a, c];
+      }
+    }, []);
+}
+
+console.log(flatten2(arr));

@@ -7,6 +7,8 @@ Array(10).fill('naive').reduce((a, c, i) => a.concat(i), []);
 // 换个膜法
 Array(10).fill('navie').map((v, i) => v = i);
 
+[...Array(100).keys()];
+
 // low的膜
 const arr = [];
 let count = 0;

@@ -47,7 +47,7 @@ const swap = (array, i, j) => {
 //   return arr;
 // }
 
-const arr = [2,3,1,4,5]
+const arr = [2,3,1,4,5];
 
 const partition = (arr, low, high) => {
 
@@ -55,37 +55,73 @@ const partition = (arr, low, high) => {
 
   while(low < high){
 
-    while(low < high && arr[high] > pivot){
+    while (low < high && arr[low] <= pivot  ) {
+      ++low;
+    }
 
+    // 交换
+    arr[high] = arr[low];
+
+    while(low < high && pivot < arr[high]){
       --high;
     }
 
     arr[low] = arr[high];
-
-    while(low < high && arr[low] <= pivot){
-
-      ++low;
-    }
-
-    arr[high] = arr[low];
   }
 
   arr[low] = pivot;
   return low;
-}
+};
 
 const quickSort = (arr, low, high) => {
 
   if(low < high){
 
     let pivot = partition(arr, low, high);
-
-    quickSort(arr, low, pivot - 1);
     quickSort(arr, pivot + 1, high);
+    quickSort(arr, low, pivot - 1);
   }
 
   return arr;
-}
+};
+
+// const partition = (arr, low, high) => {
+
+//   let pivot = arr[low];
+
+//   while(low < high){
+
+//     while(low < high && arr[high] > pivot){
+
+//       --high;
+//     }
+
+//     arr[low] = arr[high];
+
+//     while(low < high && arr[low] <= pivot){
+
+//       ++low;
+//     }
+
+//     arr[high] = arr[low];
+//   }
+
+//   arr[low] = pivot;
+//   return low;
+// }
+
+// const quickSort = (arr, low, high) => {
+
+//   if(low < high){
+
+//     let pivot = partition(arr, low, high);
+
+//     quickSort(arr, low, pivot - 1);
+//     quickSort(arr, pivot + 1, high);
+//   }
+
+//   return arr;
+// }
 
 
 

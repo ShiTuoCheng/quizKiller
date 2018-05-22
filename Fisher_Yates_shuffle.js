@@ -14,10 +14,13 @@ const shuffle_1 = arr => {
 };
 
 const shuffle_2 = arr => {
-  for(let i = arr.length-1; i > 0; i--){
+  for(let i = arr.length-1; i >= 0; i--){
+
     let j = Math.floor(Math.random() * i);
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 
   return arr;
 };
+
+console.log(shuffle_2(arr));

@@ -15,7 +15,7 @@
 
   keyArr.forEach((v, i) => {
 
-    result[v] = flattenValArr[i]
+    result[v] = flattenValArr[i];
   });
 
   return result;
@@ -33,7 +33,8 @@
       return [...a, c];
     }
   }, []);
- }
+
+ };
 
 console.log(destructuringArray([1, [2, 3], 4], '[a, [b], c]'));
 

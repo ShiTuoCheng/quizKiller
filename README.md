@@ -25,3 +25,7 @@
 #### 11.[柯里化](https://github.com/ShiTuoCheng/quizKiller/blob/master/curry.js)
 
 #### 12.[自己实现一个promise](https://github.com/ShiTuoCheng/quizKiller/blob/master/promise.js)
+
+#### 13.[快速排序](https://github.com/ShiTuoCheng/quizKiller/blob/master/quickSort.js)
+
+#### 13.[深拷贝](https://github.com/ShiTuoCheng/quizKiller/blob/master/deepCopy.js)

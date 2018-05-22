@@ -2,7 +2,7 @@
 /*jshint esversion:6 */
 
 // 文膜 \口.口/
-Array(10).fill('naive').reduce((a, c, i) => a.concat(i), []);
+Array(10).fill('naive').reduce((a, c, i) => [...a, i], []);
 
 // 换个膜法
 Array(10).fill('navie').map((v, i) => v = i);

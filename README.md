@@ -14,7 +14,7 @@
 
 ### 6.[模拟Object.create()](https://github.com/ShiTuoCheng/quizKiller/blob/master/ObjectCreat.js)
 
-### 7.[模拟new()](https://github.com/ShiTuoCheng/quizKiller/blob/master/ObjectCreat.js)
+### 7.[模拟new()](https://github.com/ShiTuoCheng/quizKiller/blob/master/new.js)
 
 ### 8.[实现：写一个类Man实现以下链式调用 调用方式： new Man('lan').sleep(3).eat('apple').sleep(5).eat('banana'); 打印： 'hello, lan' -(等待3s)--> 'lan eat apple' -(等待5s)--> 'lan eat banana'](https://github.com/ShiTuoCheng/quizKiller/blob/master/CodingMan.js)
 
@@ -29,3 +29,5 @@
 ### 13.[快速排序](https://github.com/ShiTuoCheng/quizKiller/blob/master/quickSort.js)
 
 ### 13.[深拷贝](https://github.com/ShiTuoCheng/quizKiller/blob/master/deepCopy.js)
+
+### 14.[平摊数组](https://github.com/ShiTuoCheng/quizKiller/blob/master/flatten.js)

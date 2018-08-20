@@ -54,13 +54,13 @@ function throttle2(fun, await = 1000) {
 
 const throttle3 = (fun, await = 1000) => {
   
-  let previous = 0;
+  let previous = 0
 
   return function(){
-    let now = Date.now();
-    let args = arguments;
+    let now = Date.now()
+    let args = arguments
     if (now - previous > await) {
-      fun.apply(context, args);
+      fun.apply(context, args)
     }
   }
 }

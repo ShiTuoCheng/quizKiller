@@ -18,3 +18,17 @@ function debounce1(func, await = 1000){
     }, await);
   };
 }
+
+const denounce2 = (func, await = 1000) => {
+  let timer;
+  return function() {
+    let context = this;
+    let args = arguments;
+
+    if (timer) clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      func.apply(context, args);
+    }, await);
+  }
+}

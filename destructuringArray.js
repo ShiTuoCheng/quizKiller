@@ -39,3 +39,7 @@
 console.log(destructuringArray([1, [2, 3], 4], '[a, [b], c]'));
 
 // destructuringArray([1, [2, 3], 4], '[a, [b], c]')
+
+const reverse = function (head) {
+    
+}

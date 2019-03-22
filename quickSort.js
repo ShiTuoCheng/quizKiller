@@ -47,37 +47,32 @@ const swap = (array, i, j) => {
 //   return arr;
 // }
 
-const partition = (arr, low, high) => {
-  let pivot = arr[low]
+const qs = (arr, l, r) => {
+  if (l >= r) return;
+  let left = l;
+  let right = r;
 
-  while (low < high) {
+  let middle = arr[l];
 
-    while (low < high && arr[high] > pivot) {
-      --high
+  while(left < right) {
+    while(left < right && arr[right] >= middle) {
+      right--;
     }
 
-    arr[low] = arr[high]
-
-    while (low < high && arr[low] <= pivot) {
-      ++low
+    while(left < right && arr[left] <= middle) {
+      left++;
     }
 
-    arr[high] = arr[low]
+    [arr[left], arr[right]] = [arr[right], arr[left]];
   }
 
-  arr[low] = pivot
-  return low
+  [arr[l], arr[left]] = [arr[left], arr[l]];
+  qs(arr, l, left - 1);
+  qs(arr, right + 1, r);
 }
 
-const quickSort = (arr, low, high) => {
-  if (low < high) {
+const arr = [2,1,4,5,3];
 
-    let pivot = partition(arr, low, high)
-    quickSort(arr, low, pivot - 1)
-    quickSort(arr, pivot + 1, high)
-  }
-}
+qs(arr, 0, 4);
 
-
-
-// console.log(quickSort(arr, 0, 4));
+console.log(arr);

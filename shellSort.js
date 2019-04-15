@@ -21,4 +21,26 @@ function shellSort(arr) {
   return arr;
 }
 
-shellSort(test)
+const shellSort1 = arr => {
+    const len = arr.length;
+    let gap = 1;
+
+    while (gap < len/3) {
+        gap = gap * 3 + 1; // 1, 4, 13, 40 ...
+    }
+
+    while (gap >= 1) {
+        for (let i = gap; i < len; i++) {
+            for (let j = i - 1; j >= 0 && arr[j] < arr[j - gap]; j -= gap) {
+                [arr[j], arr[j-gap]] = [arr[j-gap], arr[j]];
+            }
+        }
+        gap = gap/3;
+    }
+
+    return arr;
+}
+
+shellSort1(test)
+
+console.log(shellSort1(test));

@@ -20,3 +20,15 @@ function _new(Fun){
   return res;
 
 }
+
+function new1(fun) {
+  let tmp = {};
+
+  if (typeof fun !== 'function') {
+    return;
+  }
+
+  tmp.__proto__ = fun.prototype;
+  const res = fun.apply(tmp, [].apply.slice(arguments, 1));
+  return typeof res === 'object' ? res : tmp
+}

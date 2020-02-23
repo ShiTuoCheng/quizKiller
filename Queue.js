@@ -7,7 +7,7 @@ class Queue {
   }
 
   task(timer, fn) {
-    this.queue.push({ fn, timer: this.timer });
+    this.queue.push({ fn, timer: this.time });
     this.time += timer;
     return this;
   }

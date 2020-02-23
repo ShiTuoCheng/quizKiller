@@ -268,7 +268,7 @@ Promise.prototype.all = arr => {
   return new promise((resolve, reject) => {
     arr.forEach(task => {
       task().then(res => {
-        result.push(res);
+        results.push(res);
         i++;
 
         if (i === arr.length) {

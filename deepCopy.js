@@ -1,21 +1,25 @@
 /*jshint esversion:6 */
 
-const deepCopy = (obj) => {
+const deepCopy = (obj, cache = new WeakMap()) => {
 
   let copyObj;
 
   if(!obj && typeof obj !== 'object'){
-
     return;
   }
 
   if(Array.isArray(obj)){
-
     copyObj = [];
   }else{
     copyObj = {};
     copyObj.constructor = obj;
   }
+
+  if (cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  cache.set(obj, copyObj);
 
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {

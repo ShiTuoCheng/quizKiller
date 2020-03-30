@@ -57,3 +57,19 @@ function curry2 (fn, ...args) {
 }
 
 add(1, 2, 3);
+
+multi(1)(2)(3)(4)(5)
+
+function multi(x) {
+  let sum = x;
+  const tmp = function (y) {
+    sum *= y;
+    return tmp;
+  }
+
+  tmp.toString = function() {
+    return sum;
+  }
+
+  return tmp;
+}

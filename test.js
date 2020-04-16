@@ -540,3 +540,278 @@ Promise.prototype.all = function (arr) {
 }
 
 
+multi(1)(2)(3)(4,5);
+
+function util(argus) {
+  console.log(argus);
+  return argus.reduce((a, c) => {
+    return a + c;
+  }, 0);
+}
+
+function multi(...x) {
+  let sum = util(x);
+  const multiFn = function (...y) {
+    sum += util(y);
+    return multiFn;
+  }
+
+  multiFn.toString = function() {
+    return sum;
+  }
+
+  return multiFn;
+}
+
+function myCurry(fn, ...argus) {
+  const context = this;
+  argus = argus || [];
+  return function () {
+    const newArgs = [...argus, ...arguments];
+    if (newArgs.length < fn.length) {
+      return myCurry.apply(context, fn, newArgs);
+    } else {
+      return fn.apply(context, newArgs);
+    }
+  }
+}
+
+function apply (ctx, ...argus) {
+
+}
+
+function myInstanceof (a, b) {
+  a = a.__proto__;
+  while (true) {
+    if (a === null) return false;
+    if (a === b.prototype) return true;
+    a = a.__proto__;
+  }
+}
+
+Object.prototype.create = target => {
+  function tmp () {};
+  tmp.prototype = target;
+  return new tmp();
+}
+
+function myNew (ctor, ...argus) {
+  const tmp = Object.create(ctor);
+  const res = ctor.apply(tmp, argus);
+  return typeof tmp === 'object' ? res : tmp;
+}
+
+// sum(1), sum(1,2,3,4), sum(1)(2)(3),  console.log(sum(1)(2,3)(4)) = 10
+function util (argus) {
+  return argus.reduce((a, c) => a += c , 0)
+};
+
+function sum (...x) {
+  let result = util(x);
+  const sumFn = function (...y) {
+    result += util(y);
+    return sumFn;
+  }
+
+  // sumFn.toString = function () {
+  //   return result;
+  // }
+
+  return sumFn;
+}
+
+//chain = new Chain, new Chain.eat().sleep(5).eat().sleep(6).work()
+
+class Chain {
+  constructor () {
+    this.tasks = [];
+    setTimeout(() => {
+      this.next();
+    }, 0);
+  }
+
+  eat() {
+    const cb = _ => {
+      console.log("i'm eating");
+      this.next();
+    }
+    this.tasks.push(cb);
+    return this;
+  }
+
+  work () {
+    const cb = _ => {
+      console.log("i'm working");
+      this.next();
+    }
+    this.tasks.push(cb);
+    return this;
+  }
+
+  sleep(timer) {
+    const cb = _ => { 
+      setTimeout(() => {
+        console.log('sleeping end');
+        this.next();
+      }, timer * 1000);
+    }
+    this.tasks.push(cb);
+    return this;
+  }
+
+  next () {
+    const fn = this.tasks.shift();
+    fn && fn();
+  }
+}
+
+const chain = new Chain();
+chain.eat().sleep(5).eat().sleep(6).work();
+
+//sum(1)(2)(3)()
+
+function curry (fn, args) {
+  const context = this;
+  args = args || [];
+  return function () {
+    const newArgs = [...args, ...arguments];
+    if (fn.length > newArgs.length) {
+      return curry.call(context, fn, newArgs);
+    } else {
+      return fn.apply(context, args);
+    }
+  }
+}
+
+function sumFn(a, b, c) {
+  return a + b + c;
+}
+
+const sum = curry(sumFn);
+
+sum(1)(2)(3)
+
+// sum(1)(2)(3).valueOf()
+class Queue {
+  constructor() {
+    this.tasks = [];
+  }
+
+  task (timer, cb) {
+    this.tasks.push({
+      timer,
+      cb
+    });
+    return this;
+  }
+
+  start() {
+    let accumulate = 0;
+    for (let i = 0; i < this.tasks.length; i++) {
+      const {timer, cb} = this.tasks[i];
+      accumulate += timer;
+      setTimeout(() => {
+        cb();
+      }, accumulate); 
+    }
+  }
+}
+
+
+new Queue()
+.task(1000, ()=>{
+    console.log(1);
+})
+.task(2000, ()=>{
+    console.log(2);
+})
+.task(1000, ()=>{
+    console.log(3);
+})
+.start();
+
+// versions是一个项目的版本号列表，因多人维护，不规则
+// var versions=['1.45.0','1.5','6','3.3.3.3.3.3.3']
+// 要求从小到大排序，注意'1.45'比'1.5'大
+// sorted=['1.5','1.45.0','3.3.3.3.3.3','6']
+
+function sorted (versions) {
+
+  return versions.sort((a, b) => {
+    a = a.split('.');
+    b = b.split('.');
+
+    const max = Math.max(a.length, b.length);
+
+    for (let i = 0; i < max; i++) {
+      const x = a[i] ? parseInt(a[i]) : 0;
+      const y = b[i] ? parseInt(b[i]) : 0;
+
+      if (x > y) {
+        return 1;
+      } else if (x < y) {
+        return -1;
+      }
+    }
+  })
+}
+
+// 二叉树的遍历
+function preTranverse(root) {
+  if (root === null) return;
+  console.log(root.value);
+  preTranverse(root.left);
+
+  preTranverse(root.right);
+}
+
+function request(urls, maxNumber, callback) {
+  const tasks = {};
+  const groupNum = Math.ceil(urls.length / maxNumber);
+  function wrapRequest(url) {
+    return fetch(url, {
+      method: 'get'
+    })
+  }
+  
+  for (let i = 0; i < groupNum; i++) {
+    tasks[i] = urls.slice(i * max, (i + 1) * maxNumber).map(url => wrapRequest(url));
+  }
+
+  let currentIndex = 0;
+  const run = () => {
+    Promise.all(tasks[currentIndex])
+      .then(res => {
+        currentIndex++;
+        if (tasks[currentIndex]) {
+          run()
+        } else if (groupNum === currentIndex) {
+          callback && callback();
+        }
+      })
+  }
+}
+
+let urls = [
+  'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2580986389,1527418707&fm=27&gp=0.jpg',
+  'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1995874357,4132437942&fm=27&gp=0.jpg',
+  'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2640393967,721831803&fm=27&gp=0.jpg',
+  'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1548525155,1032715394&fm=27&gp=0.jpg',
+  'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2434600655,2612296260&fm=27&gp=0.jpg',
+  'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2160840192,133594931&fm=27&gp=0.jpg'
+];
+let max = 4;
+let callback = () => {
+  console.log('全部请求完成');
+};
+request(urls,max,callback);
+
+
+
+
+
+
+
+
+
+

@@ -140,7 +140,6 @@ console.log(child1);
 // 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
 
 function findLengthOfMaxCommonStr(str) {
-  const len = str.length;
   let maxLen = 0;
   let subStr = '';
   for (let i = 0; i < str.length; i++) {
@@ -806,6 +805,88 @@ let callback = () => {
 };
 request(urls,max,callback);
 
+// 89689678578
+function thousands(value) {
+  const tmp = value.split('');
+  const result = [];
+  for (let i = 0; i < tmp.length; i++) {
+    const item = tmp[i];
+    result.push(item)
+    if (i % 3 === 0) {
+      result.push(',');
+    }
+  }
+  return result;
+}
+
+thousands('89689678578')
+
+// eventbus
+class EventBus {
+  constructor() {
+    this._events = Object.create(null);
+  }
+
+  $on (name, cb) {
+    this._events || (this._events[name] = []).push(cb);
+  }
+
+  $emit (name) {
+    const argus = [].slice.call(arguments, 1);
+    this._events[name].forEach(cb => {
+      cb.apply(this, argus);
+    });
+  }
+
+  $off (name) {
+    this._events[name] = null;
+  }
+
+  $once (name, fn) {
+    this.$on(name, function once() {
+      fn.call(this, arguments);
+      this.$off(name);
+    })
+  }
+}
+
+Promise.prototype.all = promises => {
+  const result = [];
+  let currentIndex = 0;
+  return new Promise((resolve, reject) => {
+    promises.forEach(promise => {
+      promise.then((res) => {
+        result.push(res);
+        currentIndex++;
+        if (currentIndex === promises.length) {
+          resolve(result);
+        }
+      })
+    });
+  });
+}
+
+// 得出最长的没有重复字符的子串长度
+function findMaxLen (str) {
+  let tmpStr = '';
+  let max = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    const string = str[i];
+    const findIndex = tmpStr.indexOf(string);
+
+    if (findIndex > -1) {
+      tmpStr = tmpStr.substring(findIndex + 1);
+    }
+
+    tmpStr += string;
+    if (tmpStr.length > max) {
+      max = tmpStr.length;
+    }
+  }
+
+  return max;
+}
 
 
 

@@ -888,6 +888,323 @@ function findMaxLen (str) {
   return max;
 }
 
+// chain = new Chain().eat().sleep(5).eat().sleep(6).work()
+class Chain {
+  constructor () {
+    this.tasks = [];
+    setTimeout(() => {
+      let promise = Promise.resolve();
+      while(this.tasks.length) {
+        const fn = this.tasks.shift();
+        promise = promise.then(() => new Promise(fn));
+      }
+    }, 0);
+  }
+
+  eat () {
+    const fn = resolve => {
+      console.log("i'm eating");
+      resolve();
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+
+  sleep(timer) {
+    const fn = resolve => {
+      setTimeout(resolve, timer * 1000);
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+}
+
+class Chain {
+  constructor () {
+    this.tasks = [];
+    setTimeout(() => {
+      this.next();
+    }, 0);
+  }
+  eat () {
+    const fn = () => {
+      console.log('eating');
+      this.next();
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+  sleep (timer) {
+    const fn = () => {
+      setTimeout(() => {
+        console.log('sleeping end...');
+        this.next();
+      }, timer * 1000);
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+  next () {
+    const fn = this.tasks.shift();
+    fn && fn();
+  }
+}
+
+// [2,3,4,5], 5
+
+function findSpecIndex (arr, target) {
+  const map = {};
+  arr.forEach((v, i) => {
+    map[v] = i;
+  });
+  
+  for (const [k, i] of Object.entries(map)) {
+    if (map[target - k]) {
+      return [i, map[target - k]]
+    }
+  }
+}
+
+var versions=['1.45.0','1.5','6','3.3.3.3.3.3.3']
+
+function versionSorted (versions) {
+  return versions.sort((a, b) => {
+    a = a.split('.');
+    b = b.split('.');
+    const max = Math.max(a.length, b.length);
+
+    for (let i = 0; i < max; i++) {
+      const x = a[i] ? parseInt(a[i]) : 0;
+      const y = b[i] ? parseInt(b[i]) : 0;
+      if (x > y) {
+        return 1;
+      } else if (x < y) {
+        return -1;
+      }
+    }
+  })
+}
+
+// 分解因数
+function PrimeSplit(num, count){
+  while( count < num && num % count != 0 ){
+    //获取该数最小质数公约数
+    count ++;
+  }
+  if(count < num){
+    console.log(count + "*");
+    //获取商的最小质数公约数
+    PrimeSplit(num/count, 2);
+  }else{
+    //如果商和最小质数公约数相同，那么说明是他本身，循环结束。
+    console.log(count);
+  }
+}
+
+process.nextTick(() => {console.log('nextTick')});
+Promise.resolve().then(()=> {console.log('promise1');}).then(()=> { console.log('promise2'); }); 
+setImmediate(() => {console.log('setImmediate')});
+console.log('end') 
+
+function request(urls, maxNumber, callback) {
+  const groupNum = Math.ceil(urls.length / maxNumber);
+  const group = {};
+  function wrapRequest (url) {
+    return fetch(url, {
+      method:'get'
+    });
+  }
+
+  for (let i = 0; i < groupNum; i++) {
+    const i = groupNum[i];
+    group[i] = urls.slice(i * maxNumber, (i + 1) * maxNumber).map(url => wrapRequest(url))
+  }
+
+  let currentIndex = 0;
+  function run () {
+    Promise.all(group[currentIndex])
+      .then(res => {
+        currentIndex += 1;
+        if (groupNum !== currentIndex) {
+          run();
+        } else {
+          callback && callback();
+        }
+      })
+  }
+  run();
+}
+
+function children() {
+  parent.call(this);
+}
+
+function parent () {
+}
+
+children.prototype = Object.create(parent.prototype);
+children.prototype.constructor = children;
+
+function debounce (fn, timer) {
+  let timerid;
+  return function () {
+    timerid && clearTimeout(timerid);
+    timerid = setTimeout(() => {
+      fn.call(this, arguments);
+    }, timer);
+  }
+};
+
+function apply (ctx, argus) {
+  const fn = Symbol('fn');
+  ctx = ctx || window;
+  ctx[fn] = this;
+  const res = ctx[fn](argus);
+  delete ctx[fn];
+  return res;
+}
+
+function throttle (fn, timer) {
+  let lastTime;
+  return function () {
+    let now = +new Date();
+    if (!lastTime || lastTime - now >= timer) {
+      lastTime = now;
+      fn.call(this, arguments);
+    }
+  }
+}
+
+function findSpecIndex (arr, target) {
+  const map = {};
+  arr.forEach((v, i) => {
+    map[v] = i;
+  });
+  
+  for (let i = 0; i < arr.length; i++) {
+    const v = arr[i];
+    if (map[target-v] !== void 0 && map[target] !== i) {
+      return [i, map[target-v]]
+    }
+  }
+}
+
+function util (argus) {
+  return argus.reduce((a, c) => a + c, 0);
+}
+
+function sum(...x) {
+  let result = util(x);
+  const sumFn = function (...y) {
+    result += util(y);
+    return sumFn;
+  }
+
+  sumFn.toString = function () {
+    return result;
+  }
+
+  return result;
+}
+
+function sum (a) {
+  return function (b) {
+    return function (c) {
+      return a +b + c
+    }
+  }
+}
+
+// dfs
+function dfs(node) {
+  const stack = [];
+  stack.push(node);
+  while(stack.length) {
+    const current = stack.pop();
+    console.log(current.val);
+    if (current.left) {
+      stack.push(current.left);
+    }
+
+    if (current.right) {
+      stack.push(current.right);
+    }
+  }
+}
+
+Promise.prototype.allsettle = (promises) => {
+  return new Promise((resolve, reject) => {
+    let index = 0;
+    const result = [];
+    promises.forEach(promise => {
+      Promise.resolve(promise).then(res => {
+        index += 1;
+        result.push(res);
+        if (promises.length === index) {
+          resolve(result);
+        }
+      }, rej => {
+        index += 1;
+        result.push(rej);
+        if (promises.length === index) {
+          reject(result);
+        }
+      })
+    })
+  })
+}
+
+Function.prototype.mybind = (context, argus) => {
+  const self = this;
+  function fbound () {
+    const newArgs = [...argus, ...arguments];
+    return self.apply(this instanceof fbound ? this : context, newArgs);
+  }
+
+  fbound.prototype = Object.create(this.prototype);
+  return fbound;
+}
+
+function quickSort(arr, l, r) {
+  if (l >= r) return;
+  let left = l;
+  let right = r;
+  let mid = arr[l];
+  while(left < right) {
+    while (left < right && arr[left] <= mid) {
+      left++;
+    }
+
+    while (left < right && arr[right] >= mid) {
+      right--;
+    }
+
+    [arr[left], arr[right]] = [arr[right], arr[left]];
+  }
+
+  [arr[l], arr[left]] = [arr[left], arr[l]];
+  quickSort(arr, l , left - 1);
+  quickSort(arr, left + 1, r);
+}
+
+function findMaxLen (str) {
+  let tmp = '';
+  let maxLen = 0;
+  for (let i = 0; i < str.length; i++) {
+    const currentStr = str[i];
+    let findIndex = tmp.indexOf(currentStr);
+    if (findIndex > -1) {
+      tmp = tmp.substring(findIndex + 1);
+    }
+
+    tmp += currentStr;
+    if (maxLen < tmp.length) {
+      maxLen = tmp.length;
+    }
+  }
+  return maxLen;
+}
+
 
 
 

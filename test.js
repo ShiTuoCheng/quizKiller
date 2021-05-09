@@ -1,17 +1,73 @@
 //JS实现一个带并发限制的异步调度器Scheduler，保证同时运行的任务最多有两个。完善代码中Scheduler类，使得以下程序能正确输出
+// class Scheduler {
+//   constructor () {
+//     this.queue = [];
+//     this.count = 0;
+//   }
+
+//   async add(promiseCreator) {
+//     this.count >= 2 ? await new Promise(resolve => this.queue.push(resolve)) : '';
+//     this.count++; 
+//     const res = await promiseCreator(); 
+//     this.count--; 
+//     this.queue.length && this.queue.shift()(); 
+//     return res; 
+//   }
+// }
+
+// class Scheduler {
+//   constructor(limit = 2) {
+//     this.limit = limit;
+//     this.currentIndex = 0;
+//     this.queue = [];
+//   }
+
+//   next() {
+//     this.currentIndex++;
+//     this.queue.shift()().then(() => {
+//       this.currentIndex--;
+//       if (this.queue.length) {
+//         this.next();
+//       }
+//     })
+//   }
+
+//   add (promiseCreator) {
+//     return new Promise(resolve => {
+//       const wrapper = () => promiseCreator().then(resolve);
+//       this.queue.push(wrapper);
+//       if (this.currentIndex < this.limit) {
+//         this.next();
+//       }
+//     })
+//   }
+}
+
 class Scheduler {
-  constructor () {
+  constructor (limit = 2) {
     this.queue = [];
-    this.count = 0;
+    this.limit = limit;
+    this.currentIndex = 0;
   }
 
-  async add(promiseCreator) {
-    this.count >= 2 ? await new Promise(resolve => this.queue.push(resolve)) : '';
-    this.count++; 
-    const res = await promiseCreator(); 
-    this.count--; 
-    this.queue.length && this.queue.shift()(); 
-    return res; 
+  run () {
+    this.currentIndex++;
+    this.queue.shift()().then(() => {
+      this.currentIndex--;
+      if (this.queue.length) {
+        this.run();
+      }
+    })
+  }
+
+  add (promiseCreator) {
+    return new Promise(resolve => {
+      const wrapper = () => promiseCreator().then(resolve);
+      this.queue.push(wrapper);
+      if (this.currentIndex <= this.limit) {
+        this.run();
+      }
+    })
   }
 }
 
@@ -29,6 +85,31 @@ addTask(1000, '1')
 addTask(500, '2')
 addTask(300, '3')
 addTask(400, '4')
+
+// 大数相加
+
+
+let a = "9007199254740991";
+let b = "1234567899999999999";
+
+function bigNumAdd(a, b){
+  const max = Math.max(a.length, b.length);
+  a = a.padStart(max, 0);
+  b = b.padStart(max, 0);
+
+  let tmp = 0;
+  let plus = 0; // 进位
+  let sum = '';
+  for (let i = max - 1; i >= 0; i--) {
+    tmp =  Number(a[i]) + Number(b[j]) + plus;
+    plus = Math.floor(tmp / 10);
+    sum = tmp % 10 + sum;
+  }
+  if (plus === 1) {
+    sum = '1' + sum;
+  }
+  return sum
+}
 
 // output: 2 3 1 4
 
@@ -886,9 +967,7 @@ function findMaxLen (str) {
   }
 
   return max;
-}
-
-// chain = new Chain().eat().sleep(5).eat().sleep(6).work()
+}// chain = new Chain().eat().sleep(5).eat().sleep(6).work()
 class Chain {
   constructor () {
     this.tasks = [];
@@ -1205,9 +1284,236 @@ function findMaxLen (str) {
   return maxLen;
 }
 
+function hasPathSum (root, sum) {
+  if (root == null) return null;
+  if (root.left == null && root.right == null && root.val == sum) return true;
+  return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+}
 
+function fen (num, count = 2) {
+  while (num  > count && num % count !== 0) {
+    count++;
+  }
+  if (num > count) {
+    fen(num/count, 2);
+    console.log(count);
+  } else {
+    console.log(count);
+  }
+}
 
+class Chain {
+  constructor () {
+    this.tasks = [];
+    setTimeout(() => {
+      this.next();
+    }, 0);
+  }
 
+  eat () {
+    const fn = _ => {
+      console.log("i'm eating");
+      this.next();
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+
+  sleeping (timer) {
+    const fn = _ => {
+      console.log('sleeping start');
+      setTimeout(() => {
+        console.log('sleeping end');
+        this.next();
+      }, timer * 1000);
+    }
+    this.tasks.push(fn);
+    return this;
+  }
+
+  next () {
+    const fn = this.tasks.shift();
+    fn && fn();
+  }
+}
+
+const mailRegex = /(a-zA-Z0-9_-)+@(a-zA-Z0-9_-)+(\.[a-zA-Z0-9_-])/
+
+class EventBus {
+  constructor () {
+    this._events = Object.create(null);
+  }
+
+  $on (event, fn) {
+    this._events[event] || (this._events[event]).push(fn);
+  }
+
+  $off (event) {
+    this._events[event] = null;
+  }
+
+  $emit(event) {
+    if (!this._events[event]) return;
+    const args = [].slice.call(arguments, 1);
+    this._events[event].forEach(cb => {
+      cb && cb(args);
+    })
+  }
+
+  $once (event, fn) {
+    this.$on(event, function on () {
+      fn.call(this, argumetns);
+      this.$off(event);
+    })
+  }
+}
+
+function request (urls, maxNumber, callback) {
+  function wrapRequest (url) {
+    return fetch(url, {
+      method: 'get'
+    });
+  }
+
+  const groupNum = Math.ceil(urls.length/maxNumber);
+  const requestGroup = {};
+  let index = 0;
+
+  for (let i = 0; i < groupNum.length; i++) {
+    requestGroup[i] = urls.slice(i * maxNumber, (i + 1) * maxNumber).map(url => wrapRequest(url));
+  }
+
+  function run () {
+    Promise.all(requestGroup[index])
+      .then(res => {
+        index += 1;
+        if (index === groupNum) {
+          callback();
+        } else {
+          run();
+        }
+      });
+  }
+
+  run();
+}
+
+function thousands (num) {
+  return num.replace(/\B(?=(\d{3})+$)/g, ',');
+}
+
+function arrStr(arr) {
+  const result = [[arr[0]]];
+  for (let i = 0; i < arr.length; i++) {
+    const current = arr[i];
+    const next = arr[i + 1];
+
+    if (current + 1 == next) {
+      (result[result.length - 1]).push(next);
+    } else {
+      next && result.push([next]);
+    }
+  }
+  
+  return result.map(v => v.length > 1 ? `${v[0]}->${v[v.length - 1]}` : v[0]);
+}
+
+function quickSort(arr, l, r) {
+  if (l > r) return;
+  let left = l;
+  let right = r;
+  let mid = arr[l];
+  while(left < right) {
+    while(left < right && arr[right] >= mid) {
+      right--;
+    }
+
+    while(left < right && arr[left] <= mid) {
+      left++;
+    }
+
+    [arr[left], arr[right]] = [arr[right], arr[left]];
+  }
+
+  [arr[l], arr[left]] = [arr[left], arr[l]];
+  quickSort(arr, l, left - 1);
+  quickSort(arr, right + 1, r);
+}
+
+const arr = [2,1,4,5,3];
+
+quickSort(arr, 0, 4);
+
+console.log(arr);
+
+function Dog(name, color) {    
+  this.name = name;
+  this.color = color;
+  this.bark = function() {        
+    console.log(`hello ${this.name}`)    
+  }
+}
+Dog.prototype.bark = function () {    
+  console.log(`hi ${this.name}`)
+};
+  
+let dog = new Dog('Chop', 'Red');
+dog.bark();
+dog.__proto__.bark.call(dog);
+
+function ajax (url, method, data) {
+  const request = new XMLHttpRequest();
+  request.send(data)
+  request.open(method, url, true);
+  request.onreadystatechange = function () {
+    if (request.readyState !== 4) {
+
+    }
+  }
+}
+
+function binarySearch(arr, target) {
+  let start = 0;
+  let end = arr.length - 1;
+  while (start <= end) {
+    let middle = Math.ceil((start + end) / 2);
+    if (arr[middle] > target) {
+      end = middle - 1;
+    }
+    
+    if (arr[middle] < target) {
+      start = middle + 1;
+    }
+  }
+}
+
+function shuffle (arr) {
+  let i = arr.length
+  while(i) {
+    let j = Math.floor(Math.random() * i--);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function throttle (fn, await) {
+  let lastTime = null;
+  return function () {
+    let now = +new Date();
+    if (now - lastTime >= await) {
+      fn.apply(this, arguments);
+      lastTime = now;
+    }
+  }
+}
+
+new Promise((resolve, reject) => {
+  throw new Error()
+}).catch(err => {
+  console.log(err);
+}).then(res => {
+  console.warn(res);
+})
 
 
 

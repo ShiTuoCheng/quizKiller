@@ -72,3 +72,21 @@ function multi(x) {
 
   return tmp;
 }
+
+
+var multi = () => _curry(multiFn);
+multi(2)(3)(4)();
+multi(2,3,4);
+multi(2)(3,4);
+multi(2,3)(4);
+
+function curry2(fn) {
+  return function recursive(...args) {
+    if (fn.length >= args.length) {
+      return fn(args);
+    } else {
+      return recursive(...params.concat(args));
+    }
+  }
+}
+

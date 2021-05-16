@@ -135,3 +135,18 @@ const throttle = function(fn, wait) {
     lastTime = now;
   }
 }
+
+// 组合寄生继承
+function Parent (name) {
+  this.name = name;
+}
+
+parent.prototype.getName = () => {
+  this.name;
+}
+
+function Child (name) {
+  Parent.call(this);
+}
+
+Child.prototype = Object.create(Parent.prototype);

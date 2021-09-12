@@ -2,7 +2,7 @@
 function binarySearch(arr, target) {
   let left = 0;
   let right = arr.length - 1;
-  while(left < right) {
+  while (left < right) {
     let mid = (left + right) >> 1;
     if (target < arr[mid]) {
       right = mid - 1;
@@ -20,24 +20,28 @@ function binarySearch(arr, target) {
 }
 
 // instanceof
-function _instanceof (a, b) {
+function _instanceof(a, b) {
   a = a.__proto__;
   while (true) {
-    if (a === null) return false;
-    if (a === b.prototype) return true;
+    if (a === null) {
+      return false;
+    }
+    if (a === b.prototype) {
+      return true;
+    }
     a = a.__proto__;
   }
 }
 
 // curry
-function curry (fn) {
-  return function recursive (...args) {
+function curry(fn) {
+  return function recursive(...args) {
     if (fn.length >= args.length) {
       return fn(args);
     } else {
       return recursive(...newArgs.concat(args));
     }
-  }
+  };
 }
 
 // output: 2 3 1 4
@@ -48,20 +52,20 @@ function curry (fn) {
 // 1000ms时，1完成，输出1
 // 1200ms时，4完成，输出4
 
-const timeout = (time) => new Promise(resolve => {
-  setTimeout(resolve, time)
-})
+const timeout = time =>
+  new Promise(resolve => {
+    setTimeout(resolve, time);
+  });
 
-const scheduler = new Scheduler()
+const scheduler = new Scheduler();
 const addTask = (time, order) => {
-  scheduler.add(() => timeout(time))
-    .then(() => console.log(order))
-}
+  scheduler.add(() => timeout(time)).then(() => console.log(order));
+};
 
-addTask(1000, '1')
-addTask(500, '2')
-addTask(300, '3')
-addTask(400, '4')
+addTask(1000, '1');
+addTask(500, '2');
+addTask(300, '3');
+addTask(400, '4');
 
 class Scheduler {
   constructor(limit = 2) {
@@ -81,10 +85,10 @@ Promise.prototype.all = function (promiseArr) {
         }
       }).catch(err => {
         reject(err);
-      })
+      });
     }
   });
-}
+};
 
 // promise allsettled
 Promise.prototype.allSettled = function (promiseArr) {
@@ -94,41 +98,40 @@ Promise.prototype.allSettled = function (promiseArr) {
       p.then(res => {
         result.push({
           status: 'fulfilled',
-          value: res
-        })
+          value: res,
+        });
         if (result.length === promiseArr.length) {
           resolve(result);
         }
-      })
-      .catch(err => {
+      }).catch(err => {
         result.push({
           status: 'rejected',
-          value: err
-        })
+          value: err,
+        });
         if (result.length === promiseArr.length) {
           reject(result);
         }
-      })
+      });
     }
-  })
-}
+  });
+};
 
 // 防抖
-const denounce = function(fn, timeout) {
+const denounce = function (fn, timeout) {
   let id;
   return function () {
     id && clearTimeout(id);
-    id = setTimeout(() => {
-      fn.call(this, arguements);
+    id = setTimeout(function () {
+      fn.call(this, arguments);
     }, timeout);
-  }
-}
+  };
+};
 
 // 截流
-const throttle = function(fn, wait) {
+const throttle = function (fn, wait) {
   let lastTime = 0;
-  return function() {
-    let now = +new Date();
+  return function () {
+    let now = Number(new Date());
     if (now - lastTime > wait) {
       fn.call(this, arguments);
     }

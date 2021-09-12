@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 /**
  * shituocheng
  * 手动实现一个promise
@@ -125,10 +125,8 @@
 //   }
 // }
 
-
-
 class _Promise {
-  constructor (fn) {
+  constructor(fn) {
     this.value = null;
     this.reason = null;
     this.state = 'pending';
@@ -144,7 +142,7 @@ class _Promise {
           });
         }
       });
-    }
+    };
 
     const reject = reason => {
       setTimeout(() => {
@@ -152,10 +150,10 @@ class _Promise {
           this.state = 'rejected';
           this.rejectedCbs.forEach(cb => {
             cb && cb(reason);
-          })
+          });
         }
-      })
-    }
+      });
+    };
 
     try {
       fn(resolve, reject);
@@ -166,9 +164,12 @@ class _Promise {
 
   then(onfullfilled, onrejected) {
     onfullfilled = typeof onfullfilled === 'function' ? onfullfilled : value => value;
-    onrejected = typeof onrejected === 'function' ? onrejected : reason => {
-      throw reason;
-    }
+    onrejected =
+      typeof onrejected === 'function' ?
+        onrejected :
+        reason => {
+          throw reason;
+        };
 
     // 返回promise
     let retPromise;
@@ -176,13 +177,13 @@ class _Promise {
     if (this.state === 'fullfilled') {
       return (retPromise = new _Promise((resolve, reject) => {
         setTimeout(() => {
-          try{
+          try {
             let x = onfullfilled(this.value);
             resolvePromise(retPromise, x, resolve, reject);
           } catch (err) {
             reject(err);
           }
-        })
+        });
       }));
     }
 
@@ -214,10 +215,10 @@ class _Promise {
           try {
             let x = onrejected(reason);
             resolvePromise(retPromise, x, resolve, reject);
-          } catch(err) {
+          } catch (err) {
             reject(err);
           }
-        })
+        });
       }));
     }
   }
@@ -227,7 +228,7 @@ function resolvePromise(promise1, x, resolve, reject) {
   if (promise1 === x) {
     reject(new Error('循环引用'));
   }
-  
+
   if (x && (typeof x === 'function' || typeof x === 'object')) {
     let called;
     try {
@@ -236,12 +237,16 @@ function resolvePromise(promise1, x, resolve, reject) {
         then.call(
           x,
           y => {
-            if (called) return;
+            if (called) {
+              return;
+            }
             called = true;
-            resolvePromise(promise1, y, resolve, reject)
+            resolvePromise(promise1, y, resolve, reject);
           },
           z => {
-            if (called) return;
+            if (called) {
+              return;
+            }
             called = true;
             reject(z);
           }
@@ -250,16 +255,16 @@ function resolvePromise(promise1, x, resolve, reject) {
         resolve(x);
       }
     } catch (err) {
-      if (called) return;
+      if (called) {
+        return;
+      }
       called = true;
       reject(err);
     }
   } else {
-    resolve(x)
+    resolve(x);
   }
 }
-
-
 
 // 实现promise all
 Promise.prototype.all = arr => {
@@ -274,7 +279,7 @@ Promise.prototype.all = arr => {
         if (i === arr.length) {
           resolve();
         }
-      })
+      });
     });
   });
-}
+};
